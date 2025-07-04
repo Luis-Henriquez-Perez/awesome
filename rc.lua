@@ -104,6 +104,8 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+                              { "firefox", "firefox" },
+                              { "libreoffice", "libreoffice" },
                                     { "open terminal", terminal }
                                   }
                         })
