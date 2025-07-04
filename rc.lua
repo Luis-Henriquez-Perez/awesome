@@ -176,6 +176,231 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 -- screen.connect_signal("property::geometry", set_wallpaper)
 
+-- {{{ dock
+local dpi = beautiful.xresources.apply_dpi
+
+
+local color = {
+  background_dark      = "#1a1b26",
+  background_lighter   = "#24283b",
+  background_morelight = "#36424c",
+  white                = "#a9b1d6",
+  blueish_white        = "#89b4fa",
+  red                  = "#F7768E",
+  green                = "#73daca",
+  yellow               = "#E0AF68",
+  blue                 = "#7AA2F7",
+  magenta              = "#BB9AF7",
+  cyan                 = "#7dcfff",
+
+}
+
+-- directory
+local create_directory_button = function(icon_path, launch_directory, mleft, mright, mtop, mbottom)
+	local button = wibox.widget {
+		{
+			{
+				widget = wibox.widget.imagebox,
+				image = icon_path,
+				resize = true,
+				opacity = 1,
+			},
+			left   = dpi(mleft),
+			right  = dpi(mright),
+			top    = dpi(mtop),
+			bottom = dpi(mbottom),
+			widget = wibox.container.margin
+		},
+		bg = color.background_dark,
+		shape = gears.shape.rounded_rect,
+		widget = wibox.container.background,
+		forced_height = dpi(48),
+		forced_width = dpi(48),
+	}
+
+	--Open app on click
+	button:connect_signal("button::press", function(_, _, _, button)
+		if button == 1 then
+			awful.spawn.with_shell("thunar " .. launch_directory)
+		end
+	end)
+
+
+	--Hover highlight effects
+	button:connect_signal("mouse::enter", function()
+		button.bg = color.background_lighter
+	end)
+
+	button:connect_signal("mouse::leave", function()
+		button.bg = color.background_dark
+	end)
+
+	button:connect_signal("button::press", function()
+		button.bg = color.background_morelight
+	end)
+
+	button:connect_signal("button::release", function()
+		button.bg = color.background_lighter
+	end)
+
+	return button
+end
+
+local directories = {
+	-- home = create_directory_button('user-home.svg', ' ', 2, 0, 0, 2),
+	documents = create_directory_button('/usr/share/icons/AdwaitaLegacy/48x48/places/folder-documents.png', '~/Documents/', 0, 0, 0, 2),
+	downloads = create_directory_button('/usr/share/icons/AdwaitaLegacy/48x48/places/folder-download.png', '~/Downloads/', 0, 0, 0, 2),
+	-- config = create_directory_button('folder-development.svg', '~/.config', 0, 0, 0, 2),
+}
+
+local downloads = directories.downloads
+local documents = directories.documents
+
+-- apps
+local create_app_button = function(icon_path, launch_app, mleft, mright, mtop, mbottom)
+	local button = wibox.widget {
+		{
+			{
+				widget = wibox.widget.imagebox,
+				image = icon_path,
+				resize = true,
+				opacity = 1,
+			},
+			left   = dpi(mleft),
+			right  = dpi(mright),
+			top    = dpi(mtop),
+			bottom = dpi(mbottom),
+			widget = wibox.container.margin
+		},
+		bg = color.background_dark,
+		shape = gears.shape.rounded_rect,
+		widget = wibox.container.background,
+		forced_height = dpi(48),
+		forced_width = dpi(48),
+	}
+
+	--Open app on click
+	button:connect_signal("button::press", function(_, _, _, button)
+		if button == 1 then
+			awful.spawn.with_shell(launch_app)
+		end
+	end)
+
+
+	--Hover highlight effects
+	button:connect_signal("mouse::enter", function()
+		button.bg = color.background_lighter
+	end)
+
+	button:connect_signal("mouse::leave", function()
+		button.bg = color.background_dark
+	end)
+
+	button:connect_signal("button::press", function()
+		button.bg = color.background_morelight
+	end)
+
+	button:connect_signal("button::release", function()
+		button.bg = color.background_lighter
+	end)
+
+	return button
+end
+
+local apps = {
+	firefox = create_app_button('/usr/share/icons/hicolor/64x64/apps/firefox.png', 'firefox', 1, 1, 3, 3),
+	-- libreoffice = create_app_button('/usr/share/icons/hicolor/64x64/apps/libreoffice-writer.png', 'libreoffice-writer', 2, 2, 3, 3),
+	abiword = create_app_button('/usr/share/icons/hicolor/48x48/apps/abiword.png', 'abiword', 2, 2, 3, 3),
+}
+
+local Item1 = apps.firefox
+local Item2 = apps.abiword
+
+--Separator line
+local vertical_separator = wibox.widget {
+	orientation = 'vertical',
+	forced_height = dpi(1.5),
+	forced_width = dpi(1.5),
+	span_ratio = 0.55,
+	widget = wibox.widget.separator,
+	color = "#a9b1d6",
+	border_color = "#a9b1d6",
+	opacity = 0.55
+}
+
+local Separator = wibox.widget.textbox("   ")
+Separator.forced_height = dpi(60)
+
+local Separator2 = wibox.widget.textbox(" ")
+
+local function create_dock (s)
+    local dock = awful.popup {
+        screen = s,
+        widget = wibox.container.background,
+        ontop = false,
+        bg = "#00000000",
+        visible = true,
+        maximum_height = dpi(60),
+        placement = function(c)
+            awful.placement.bottom(c,
+                                   { margins = { top = dpi(8), bottom = dpi(5), left = 0, right = 0 } })
+        end,
+        type = "dock"
+    }
+
+    dock:struts {
+        bottom = dpi(64)
+    }
+
+    dock:setup {
+        {
+            Separator2,
+            Separator2,
+            Separator2,
+            Separator,
+            {
+                Item1,
+                layout = wibox.container.place
+            },
+            Separator,
+            vertical_separator,
+            Separator,
+            {
+                Item2,
+                layout = wibox.container.place
+            },
+            Separator,
+            vertical_separator,
+            Separator,
+
+            {
+                documents,
+                layout = wibox.container.place
+            },
+            Separator,
+            vertical_separator,
+            Separator,
+
+            {
+                downloads,
+                layout = wibox.container.place
+            },
+            Separator,
+            Separator2,
+
+            layout = wibox.layout.fixed.horizontal,
+        },
+        widget = wibox.container.background,
+        -- bg = color.background_dark,
+        bg = color.background_dark,
+        shape = function(cr, width, height)
+            gears.shape.rounded_rect(cr, width, height, 15)
+        end,
+    }
+    return dock
+end
+-- }}}
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     -- set_wallpaper(s)
@@ -228,6 +453,7 @@ awful.screen.connect_for_each_screen(function(s)
             s.mylayoutbox,
         },
     }
+    s.mydock = create_dock(s)
 end)
 -- }}}
 
@@ -439,12 +665,19 @@ local function system_delete_wallpaper ()
     awful.spawn("set_wallpaper --delete", false)
 end
 
+local function awesome_toggle_dock ()
+    local s = awful.screen.focused()
+    if s.mydock then
+        s.mydock.visible = not s.mydock.visible
+    end
+end
 -- awesome
 globalkey({ modkey, "Shift" }, "q", awesome.quit, "quit awesome", "awesome")
 globalkey({ modkey, "Control" }, "r", awesome.restart, "reload awesome", "awesome")
 globalkey({ modkey }, "s", hotkeys_popup.show_help, "show help", "awesome")
 globalkey({ modkey }, "x", awesome_run_lua_code, "lua execute prompt", "awesome")
 globalkey({ modkey }, "g", awesome_toggle_wibox, "toggle wibox", "awesome")
+globalkey({ modkey }, "y", awesome_toggle_dock, "toggle dock", "awesome")
 
 -- system
 globalkey({ modkey , "Shift"}, "r", system_reboot, "Reboot", "reboot")
