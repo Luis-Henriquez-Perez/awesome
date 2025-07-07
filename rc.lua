@@ -93,6 +93,9 @@ awful.layout.layouts = {
 -- }}}
 
 -- {{{ Menu
+beautiful.menu_height = 25  -- default is often 15
+beautiful.menu_width  = 200 -- adjust as you like
+beautiful.menu_font   = "Iosevka 14"  -- set your font and size
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
