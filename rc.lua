@@ -432,11 +432,11 @@ end
 -- The windows to the sides of the screen and thus showing the desktop.  This is
 -- what i wanna do because sometimes I want to see the desktop.
 local function system_switch_wallpaper ()
-    awful.spawn("set_wallpaper", false)
+    awful.spawn("wallpaper", false)
 end
 
 local function system_delete_wallpaper ()
-    awful.spawn("set_wallpaper --delete", false)
+    awful.spawn("wallpaper --delete", false)
 end
 
 -- awesome
