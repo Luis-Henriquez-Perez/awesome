@@ -103,7 +103,8 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
+                                    { "change wallpaper", "wallpaper", "/usr/share/icons/AdwaitaLegacy/32x32/legacy/preferences-desktop-wallpaper.png"},
+                                    { "open terminal", terminal, "/usr/share/icons/AdwaitaLegacy/32x32/legacy/utilities-terminal.png"}
                                   }
                         })
 
