@@ -27,6 +27,8 @@ local revelation=require("revelation")
 naughty.config.defaults.font = "Sans 16"
 naughty.config.defaults.max_width = 600
 naughty.config.defaults.max_height = 300
+naughty.config.defaults.margin = 16
+naughty.config.defaults.spacing = 8
 
 -- {{{ Error handling
 
