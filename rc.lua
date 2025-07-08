@@ -24,7 +24,12 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 local revelation=require("revelation")
 
+naughty.config.defaults.font = "Sans 16"
+naughty.config.defaults.max_width = 600
+naughty.config.defaults.max_height = 300
+
 -- {{{ Error handling
+
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
