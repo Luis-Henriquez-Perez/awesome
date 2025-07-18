@@ -350,7 +350,7 @@ local function create_dock (s)
         widget = wibox.container.background,
         ontop = false,
         bg = "#00000000",
-        visible = true,
+        visible = false,
         maximum_height = dpi(60),
         placement = function(c)
             awful.placement.bottom(c,
