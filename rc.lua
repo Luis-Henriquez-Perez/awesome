@@ -681,6 +681,14 @@ local function awesome_toggle_dock ()
         s.mydock.visible = not s.mydock.visible
     end
 end
+
+-- local function awesome_normie_mode ()
+--     -- enable all the titlebars
+--     local s = awful.screen.focused()
+--     for s in screen do
+--         s.mywibox.visible = not s.mywibox.visible
+--     end
+-- end
 -- awesome
 globalkey({ modkey, "Shift" }, "q", awesome.quit, "quit awesome", "awesome")
 globalkey({ modkey, "Control" }, "r", awesome.restart, "reload awesome", "awesome")
