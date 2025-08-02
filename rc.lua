@@ -664,6 +664,10 @@ local function awesome_toggle_wibox ()
     end
 end
 
+local function system_prompt_password ()
+    awful.spawn("password", false)
+end
+
 -- I remember way back when I had a mac that it had this functionality to swipe
 -- The windows to the sides of the screen and thus showing the desktop.  This is
 -- what i wanna do because sometimes I want to see the desktop.
@@ -693,11 +697,11 @@ end
 globalkey({ modkey, "Shift" }, "q", awesome.quit, "quit awesome", "awesome")
 globalkey({ modkey, "Control" }, "r", awesome.restart, "reload awesome", "awesome")
 globalkey({ modkey }, "s", hotkeys_popup.show_help, "show help", "awesome")
-globalkey({ modkey }, "x", awesome_run_lua_code, "lua execute prompt", "awesome")
 globalkey({ modkey }, "g", awesome_toggle_wibox, "toggle wibox", "awesome")
 globalkey({ modkey }, "y", awesome_toggle_dock, "toggle dock", "awesome")
 
 -- system
+globalkey({ modkey }, "x", system_prompt_password, "copy password", "system")
 globalkey({ modkey , "Shift"}, "r", system_reboot, "Reboot", "reboot")
 globalkey({ modkey }, "u", system_launch_qutebrowser, "Launch qutebrowser", "system")
 globalkey({ modkey }, "Return", system_launch_terminal, "Launch terminal", "system")
@@ -920,6 +924,18 @@ client.connect_signal("unmanage", function(c)
     if master and client.focus ~= master then
         client.focus = master
         master:raise()
+    end
+end)
+
+-- Float specific Emacs frames (like Vertico launcher)
+client.connect_signal("manage", function(c)
+    if c.class == "Emacs" and c.name == "erofi" then
+        c.floating = true
+        c.ontop = true
+        c.width = 800
+        c.height = 250
+        c.x = (screen[1].geometry.width - c.width) / 2
+        c.y = (screen[1].geometry.height - c.height) / 4  -- top-center-ish
     end
 end)
 
