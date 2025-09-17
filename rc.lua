@@ -319,7 +319,7 @@ local create_app_button = function(icon_path, launch_app, mleft, mright, mtop, m
 end
 
 local apps = {
-	firefox = create_app_button('/usr/share/icons/hicolor/64x64/apps/firefox.png', 'firefox', 1, 1, 3, 3),
+	firefox = create_app_button('/usr/share/icons/hicolor/64x64/apps/firefox.png', 'librewolf', 1, 1, 3, 3),
 	-- libreoffice = create_app_button('/usr/share/icons/hicolor/64x64/apps/libreoffice-writer.png', 'libreoffice-writer', 2, 2, 3, 3),
 	abiword = create_app_button('/usr/share/icons/hicolor/48x48/apps/abiword.png', 'abiword', 2, 2, 3, 3),
 }
@@ -611,7 +611,7 @@ local function system_launch_emacs ()
 end
 
 local function system_launch_firefox ()
-    awful.spawn("firefox")
+    awful.spawn("librewolf")
 end
 
 local function system_launch_qutebrowser ()
