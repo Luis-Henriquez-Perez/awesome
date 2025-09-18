@@ -860,6 +860,19 @@ awful.rules.rules = {
      }
     },
 
+    -- Emacs does not tile properly at first spawn.  The emacsclient frame does
+    -- but not the normal frame from creating a new Emacs instance.  This fixes
+    -- it.  I may apply this rules to all windows later.
+    {  rule_any = {
+           class = {
+               "emacs", "Emacs"
+           }
+    },
+       properties = {
+                      size_hints_honor = false
+       }
+    },
+
     -- Floating clients.
     { rule_any = {
         instance = {
